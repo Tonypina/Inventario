@@ -4,12 +4,12 @@ static Node* newNode( int code, int name, int quantity )
 {
 	Node* n = (Node*) malloc( sizeof( Node ) );
   	if( n ){
-  	n->data->code = code;
-    n->data->name = name;
-    n->data->quantity = quantity;
-  	n->next = NULL;
-  	n->prev = NULL;
-  	}
+  		n->data->code = code;
+    		n->data->name = name;
+    		n->data->quantity = quantity;
+  		n->next = NULL;
+  		n->prev = NULL;
+	}
   	return n;
 }
 
