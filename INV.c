@@ -1,12 +1,12 @@
 #include "INV.h"
 
-static Node* newNode( char* code, char* name, char* quantity )
+static Node* newNode( char* code, char* name, int quantity )
 {
   Node* n = (Node*) malloc( sizeof( Node ) );
     if( n ){
       strcpy(n->data.code, code);
       strcpy(n->data.name, name);
-      strcpy(n->data.quantity, quantity);
+      n->data.quantity = quantity;
       n->next = NULL;
       n->prev = NULL;
     }
@@ -42,7 +42,26 @@ void INV_Delete( INV** this ){
   *this = NULL;
 }
 
-bool INV_InsertBack( INV* this, char* code, char* name, char* quantity ){
+bool INV_Out(INV* this, char* code, int quantity ){
+
+  if(INV_Search(this, code)){
+    this->cursor->data.quantity -= quantity;
+    return true;
+  }
+  return false;
+}
+
+bool INV_Add(INV* this, char* code, char* name, int quantity ){
+
+  if(INV_Search(this, code)){
+    this->cursor->data.quantity += quantity;
+    return true;
+  }
+  INV_InsertBack(this, code, name, quantity);
+  return true;
+}
+
+bool INV_InsertBack( INV* this, char* code, char* name, int quantity ){
     assert( this );
     bool done = false;
     Node* n = newNode( code, name, quantity );
@@ -53,14 +72,15 @@ bool INV_InsertBack( INV* this, char* code, char* name, char* quantity ){
         n->prev = this->last;
         this->last = n;
       } else {
+
         this->first = this->last = n;
-    }
+      }
       ++this->len;
+      return done;
     }
-    return done;
 }
 
-bool INV_InsertFront( INV* this, char* code, char* name, char* quantity ){
+bool INV_InsertFront( INV* this, char* code, char* name, int quantity ){
   assert( this );
     bool done = false;
     Node* n = newNode( code, name, quantity );
