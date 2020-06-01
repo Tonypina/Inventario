@@ -31,20 +31,23 @@ void Menu(INV* this){
 		switch(answer){
 			case 1:
 				printf("Inserte el codigo del producto: ");
+				setbuf(stdin, NULL); //limpia el buffer
 				gets(code);
 				printf("\nInserte el nombre del producto: ");
+				setbuf(stdin, NULL);
 				gets(nombre);
 				printf("\nInserte la cantidad de producto: ");
 				scanf("%d", &cantidad);
 				INV_Add(this, code, nombre, cantidad);
-				break;
+				
 			case 2:
 				printf("Inserte el codigo del producto:");
+				setbuf(stdin, NULL);
 				gets(code);
 				printf("\nInserte la cantidad que sale:");
 				scanf("%d", &cantidad);
 				INV_Out(this, code, cantidad);
-				break;
+				
 			case 3:
 				
 				system("cls");
