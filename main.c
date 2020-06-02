@@ -19,8 +19,7 @@ void Menu(INV* this){
 	char nombre[TAM_NAME];
 	int cantidad;
 	do {
-		printf("Seleccione una opcion:\n");
-		printf("Sistema de Inventario.\n\n");
+		printf("--- Sistema de Inventario. ---\n\n");
 		printf("Opciones:\n\n");
 		printf("1. Agregar al inventario.\n");
 		printf("2. Eliminar del inventario.\n");
@@ -33,19 +32,24 @@ void Menu(INV* this){
 				printf("Inserte el codigo del producto: ");
 				setbuf(stdin, NULL); //limpia el buffer
 				gets(code);
+				
 				printf("\nInserte el nombre del producto: ");
 				setbuf(stdin, NULL);
 				gets(nombre);
+				
 				printf("\nInserte la cantidad de producto: ");
 				scanf("%d", &cantidad);
+				
 				INV_Add(this, code, nombre, cantidad);
 				
 			case 2:
 				printf("Inserte el codigo del producto:");
 				setbuf(stdin, NULL);
 				gets(code);
+				
 				printf("\nInserte la cantidad que sale:");
 				scanf("%d", &cantidad);
+				
 				INV_Out(this, code, cantidad);
 				
 			case 3:
