@@ -41,6 +41,7 @@ bool INV_Out(INV* this, char* code, int quantity );
 size_t INV_Len( 		INV* this 						);
 bool INV_IsEmpty( 		INV* this 						);
 void INV_MakeEmpty( 	INV* this 						);
+bool INV_Peek( INV* this, char* data_back );
 bool INV_Search( 		INV* this, char* code 				);
 
 #endif   /* ----- #ifndef INV_INC  ----- */
