@@ -1,4 +1,9 @@
+//comando de compilacion
+//gcc -Wall -std=c99 -o main.c INV.c
+
 #include "INV.h"
+
+void clear_screen();
 
 void Archivo(INV* this){
 
@@ -25,11 +30,13 @@ void Menu(INV* this){
 		printf("1. Agregar al inventario.\n");
 		printf("2. Eliminar del inventario.\n");
 		printf("3. Reportes.\n");
-		printf("4. Salir.\n");
+		printf("4. Mostrar todos los productos.\n");
+		printf("5. Salir.\n");
 
 		scanf("%d", &answer);
 		switch(answer){
 			case 1:
+				system("cls");
 				printf("Inserte el codigo del producto: ");
 				setbuf(stdin, NULL); //limpia el buffer
 				gets(code);
@@ -39,7 +46,8 @@ void Menu(INV* this){
     					printf("Desea agregarlo? (1/0)\n");
     					int resp;
     					scanf("%d", &resp);
-    					if (resp == 1){
+    					if (resp == 1)
+					{
     					
     						printf("\nInserte el nombre del producto: ");
 						setbuf(stdin, NULL);
@@ -49,22 +57,41 @@ void Menu(INV* this){
 						scanf("%d", &cantidad);
 				
 						INV_Add(this, code, nombre, cantidad);
+						printf("Agregado con exito.\n");
+
+						system("PAUSE");
+						system("cls");
 						break;
     					}
+					printf("No se agrego el producto\n");
     					break;
   				}
-  				INV_PrintNode(this, name);
+  				PrintNode(this, name);
 
   				printf("\nInserte la cantidad de producto: ");
 				scanf("%d", &cantidad);
 				
 				INV_Add(this, code, nombre, cantidad);
+
 				break;
 				
 			case 2:
+				system("cls");
+				if(INV_IsEmpty(this))
+				{
+					printf("El inventario esta vacio\n");
+					clear_screen();
+					break;
+				}
+
 				printf("Inserte el codigo del producto:");
 				setbuf(stdin, NULL);
 				gets(code);
+
+				INV_Search(this, code);
+
+				printf("Producto seleccionado:\n");
+				PrintNode(this, name);
 				
 				printf("\nInserte la cantidad que sale:");
 				scanf("%d", &cantidad);
@@ -76,25 +103,57 @@ void Menu(INV* this){
 				
 				system("cls");
 				break;
-			case 4:
-				printf("---SALISTE---\n");
 
-				system("PAUSE");
+			case 4:
+				system("cls");
+				printf("----- Inventario -----\n\n");
+				if(INV_IsEmpty(this))
+				{
+					printf("El inventario esta vacio.\n\n");
+					clear_screen();
+					break;
+				}
+				printf("Productos existentes:\n\n");
+				
+				INV_CursorFirst(this);
+
+				for(size_t i = 0; i < INV_Len(this); ++i)
+				{
+					PrintNode(this, name);
+					INV_CursorNext(this);
+				}
+				
+				printf("Actualmente hay %d productos en el inventario.\n\n", INV_Len(this));
+				clear_screen();
+
+				break;
+
+			case 5:
+				printf("---SALISTE---\n\n");
+
+				clear_screen();
 				break;
 			default:
 				
-				printf("Ingresa una opcion valida.\n");
-				system("PAUSE");
-				system("cls");
-			
+				printf("Ingresa una opcion valida.\n\n");
+				clear_screen();			
 		}
-	} while (answer != 4);
+	} while (answer != 5);
 }
-
 
 int main()
 {	
 	INV* inv = INV_New();
+	
+	system("cls");
+	
 	Menu(inv);
+	
 	INV_Delete(&inv);
+}
+
+void clear_screen()
+{
+	system("PAUSE");
+	system("cls");
 }
