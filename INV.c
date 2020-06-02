@@ -50,8 +50,11 @@ void INV_PrintNode(INV* this, char* name){
 bool INV_Out(INV* this, char* code, int quantity ){
 
   if(INV_Search(this, code)){
-    this->cursor->data.quantity -= quantity;
-    return true;
+    if(this->cursor->data.quantity > 0){
+      this->cursor->data.quantity -= quantity;
+      return true;
+    }
+    return false;
   }
   return false;
 }
