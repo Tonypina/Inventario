@@ -87,16 +87,15 @@ void Menu(INV* this){
 				printf("Inserte el codigo del producto:");
 				setbuf(stdin, NULL);
 				gets(code);
-
-				INV_Search(this, code);
-
-				printf("Producto seleccionado:\n");
-				PrintNode(this, name);
 				
 				printf("\nInserte la cantidad que sale:");
 				scanf("%d", &cantidad);
 				
-				INV_Out(this, code, cantidad);
+				if(!INV_Out(this, code, cantidad)){
+					printf("No se pudo sacar el artículo porque no existe o sus existencias son cero.\n");
+					break;
+				}
+				printf("Se logró retirar con éxito.\n");
 				break;
 
 			case 3:
