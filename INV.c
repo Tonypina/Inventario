@@ -63,9 +63,9 @@ bool INV_Add(INV* this, char* code, char* name, int quantity ){
     return true;
   }
 
-  printf("Antes del insert\n");
+  //printf("Antes del insert\n");
   INV_InsertBack(this, code, name, quantity);
-  printf("Depues del insert\n");
+  //printf("Depues del insert\n");
   return true;
 }
 
