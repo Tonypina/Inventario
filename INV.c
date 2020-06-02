@@ -42,6 +42,11 @@ void INV_Delete( INV** this ){
   *this = NULL;
 }
 
+void INV_PrintNode(INV* this, char* name){
+  INV_Peek(this, name);
+  printf("%s\n", name);
+}
+
 bool INV_Out(INV* this, char* code, int quantity ){
 
   if(INV_Search(this, code)){
@@ -57,7 +62,10 @@ bool INV_Add(INV* this, char* code, char* name, int quantity ){
     this->cursor->data.quantity += quantity;
     return true;
   }
+
+  printf("Antes del insert\n");
   INV_InsertBack(this, code, name, quantity);
+  printf("Depues del insert\n");
   return true;
 }
 
@@ -92,7 +100,7 @@ bool INV_InsertFront( INV* this, char* code, char* name, int quantity ){
         this->first = n;
       } else {
         this->first = this->last = n;
-    }
+      }
       ++this->len;
     }
     return done;
@@ -103,7 +111,7 @@ size_t INV_Len( INV* this ){
 }
 
 bool INV_IsEmpty( INV* this ){
-  return (this->len);
+  return (!this->len);
 }
 
 void INV_MakeEmpty( INV* this )
@@ -112,7 +120,7 @@ void INV_MakeEmpty( INV* this )
     while( NULL != this->first){
       Node* tmp = this->first->next;
       free( this->first );
-    this->first = tmp;
+      this->first = tmp;
     }
     reset( this );
 }
@@ -139,6 +147,16 @@ void INV_CursorPrev( INV* this ){
   if (this->cursor){
     this->cursor = this->cursor->prev;
   }
+}
+
+bool INV_Peek( INV* this, char* data_back ){
+  assert(this);
+  bool done = false;
+  if (this){
+    strcpy(data_back, this->cursor->data.name);
+    done = true;
+  }
+  return done;
 }
 
 bool INV_Search( INV* this, char* code ){
