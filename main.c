@@ -5,8 +5,11 @@
 
 int main()
 {	
+
 	INV* inv = INV_New();
 	
+	Stock_ReadArchive(inv);
+
 	system("cls");
 	
 	Stock_Menu(inv);
