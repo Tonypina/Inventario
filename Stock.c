@@ -5,17 +5,21 @@ void Stock_clear_screen(){
   system("cls");
 }
 
-void Stock_PrintNode(INV* this, char* name){
-  INV_Peek(this, name);
-  printf("%s\n", name);
+void Stock_PrintNode(INV* this, char* code, char* name, int* quantity){
+  INV_Peek(this, code, name, quantity);
+  printf("%s: %s\n", code, name);
+  printf("Cantidad: %d\n\n", *quantity);
 }
 
 bool Stock_Out(INV* this, char* code, int quantity ){
 
   if(INV_Search(this, code)){
     if(this->cursor->data.quantity > 0){
-      this->cursor->data.quantity -= quantity;
-      return true;
+	if(this->cursor->data.quantity >= quantity){
+      	  this->cursor->data.quantity -= quantity;
+      	  return true;
+	}
+	return false;
     }
     return false;
   }
@@ -53,6 +57,26 @@ void Stock_Archive(INV* this){
     fwrite(&it->data, sizeof(it->data), 1, file);
   }
   fclose(file);
+}
+
+void Stock_ReadArchive(INV* this){
+
+  FILE* file = fopen("inventario.dat", "rb");
+  Product test;
+
+  fread(&test,sizeof(test),1,file);
+  while (!feof(file)){
+    
+    if(!INV_Len(this)){
+    	INV_InsertBack(this, test.code, test.name, test.quantity);
+    } else {
+        ord_insercion(this, test.code, test.name, test.quantity);
+    }
+	  
+    fread(&test, sizeof(test), 1, file);
+  }
+  fclose(file);
+  remove("inventario.dat");
 }
 
 void Stock_Menu(INV* this){
@@ -106,7 +130,7 @@ void Stock_Menu(INV* this){
           printf("No se agrego el producto\n");
           break;
         }
-        Stock_PrintNode(this, name);
+        Stock_PrintNode(this, code, name, &cantidad);
 
         printf("\nInserte la cantidad de producto: ");
         scanf("%d", &cantidad);
@@ -133,14 +157,14 @@ void Stock_Menu(INV* this){
         
         if(!Stock_Out(this, code, cantidad)){
           
-          printf("No se pudo sacar el articulo porque no existe o sus existencias son cero.\n");
+          printf("No se pudo sacar el artículo porque no existe o sus existencias son cero.\n");
           break;
         }
 
-        printf("Se logro retirar con exito.\n");
+        printf("Se logró retirar con éxito.\n");
         break;
       case 3:
-        
+
         break;
       case 4:
         
@@ -159,7 +183,7 @@ void Stock_Menu(INV* this){
 
         for(size_t i = 0; i < INV_Len(this); ++i){
 
-          Stock_PrintNode(this, name);
+          Stock_PrintNode(this, code, name, &cantidad);
           INV_CursorNext(this);
         }
         
@@ -167,6 +191,8 @@ void Stock_Menu(INV* this){
         Stock_clear_screen();
         break;
       case 5:
+        Stock_Archive(this);
+
         printf("---SALISTE---\n\n");
 
         Stock_clear_screen();
