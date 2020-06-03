@@ -130,7 +130,7 @@ void INV_CursorPrev( INV* this ){
   }
 }
 
-bool INV_Peek( INV* this, char* data_back ){
+bool INV_Peek(INV* this, char* code, char* name, int* quantity){
   assert(this);
   bool done = false;
   if (this){
