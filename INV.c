@@ -42,36 +42,6 @@ void INV_Delete( INV** this ){
   *this = NULL;
 }
 
-void INV_PrintNode(INV* this, char* name){
-  INV_Peek(this, name);
-  printf("%s\n", name);
-}
-
-bool INV_Out(INV* this, char* code, int quantity ){
-
-  if(INV_Search(this, code)){
-    if(this->cursor->data.quantity > 0){
-      this->cursor->data.quantity -= quantity;
-      return true;
-    }
-    return false;
-  }
-  return false;
-}
-
-bool INV_Add(INV* this, char* code, char* name, int quantity ){
-
-  if(INV_Search(this, code)){
-    this->cursor->data.quantity += quantity;
-    return true;
-  }
-
-  //printf("Antes del insert\n");
-  INV_InsertBack(this, code, name, quantity);
-  //printf("Depues del insert\n");
-  return true;
-}
-
 bool INV_InsertBack( INV* this, char* code, char* name, int quantity ){
     assert( this );
     bool done = false;
