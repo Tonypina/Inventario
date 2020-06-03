@@ -36,12 +36,14 @@ INV* INV_New();
 void INV_Delete( 		INV** this 						);
 bool INV_InsertBack( 	INV* this, char* code, char* name, int quantity );
 bool INV_InsertFront( 	INV* this, char* code, char* name, int quantity );
-bool INV_Add(INV* this, char* code, char* name, int quantity );
-bool INV_Out(INV* this, char* code, int quantity );
 size_t INV_Len( 		INV* this 						);
 bool INV_IsEmpty( 		INV* this 						);
 void INV_MakeEmpty( 	INV* this 						);
-bool INV_Peek( INV* this, char* data_back );
-bool INV_Search( 		INV* this, char* code 				);
+bool INV_Peek(          INV* this, char* data_back      );
+bool INV_Search( 		INV* this, char* code 			);
+void INV_CursorFirst(   INV* this                       );
+void INV_CursorLast(    INV* this                       );
+void INV_CursorNext(    INV* this                       );
+void INV_CursorPrev(    INV* this                       );
 
 #endif   /* ----- #ifndef INV_INC  ----- */
