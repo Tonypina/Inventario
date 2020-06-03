@@ -2,7 +2,6 @@
 #define Stock_INC
 
 #include "INV.h"
-#include "Menu.h"
 
 void Stock_clear_screen(                                              );
 void Stock_PrintNode( INV* this, char* name                           );
