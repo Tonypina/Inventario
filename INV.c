@@ -55,7 +55,8 @@ bool INV_InsertBack( INV* this, char* code, char* name, int quantity ){
     Node* n = newNode( code, name, quantity );
     if( n ){
       done = true;
-      if(!INV_IsEmpty( this )){
+      if(!INV_IsEmpty( this ))
+      {
         this->last->next = n;
         n->prev = this->last;
         this->last = n;
@@ -149,4 +150,59 @@ bool INV_Search( INV* this, char* code ){
       }
     }
     return found;
+}
+
+bool ord_insercion(INV* this, char* code, char* name, int quantity)
+{
+	Node* right = this->last;
+	Node* left = this->first;
+	if( strcmp(name, right->data.name) > 0 )
+	{
+		INV_InsertBack(this, code, name, quantity);
+		return true;
+	}
+
+	if( strcmp(name, left->data.name) < 0 )
+	{
+		INV_InsertFront(this, code, name, quantity);
+		return true;
+	}
+
+	if( strcmp(name, right->data.name) < 0 && strcmp(name, left->data.name) > 0 && INV_Len(this) == 2)
+	{
+		Node* n = newNode( code, name, quantity );
+		if(n)
+		{
+			right->prev = n;
+			left->next = n;
+			n->next = right;
+			n->prev = left;
+			++this->len;
+			return true;
+		}
+	}
+
+	if(INV_Len(this) > 2)
+	{
+		left = this->last->prev;
+		for(size_t i = 0; i < INV_Len(this); ++i)
+		{
+			if( strcmp(name, right->data.name) < 0 && strcmp(name, left->data.name) > 0 )
+			{
+				 Node* n = newNode( code, name, quantity );
+				 if( n )
+				 {
+					left->next = n;
+					right->prev = n;
+					n->prev = left;
+					n->next = right;
+					++this->len;
+				 }
+				break;
+			}
+			left = left->prev;
+			right = right->prev;
+		}
+		return true;
+	}
 }
