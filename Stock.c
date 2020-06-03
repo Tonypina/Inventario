@@ -1,4 +1,3 @@
-
 #include "Stock.h"
 
 void Stock_clear_screen(){
@@ -25,12 +24,22 @@ bool Stock_Out(INV* this, char* code, int quantity ){
 
 bool Stock_Add(INV* this, char* code, char* name, int quantity ){
 
-  if(INV_Search(this, code)){
+  if(INV_Search(this, code))
+  {
     this->cursor->data.quantity += quantity;
     return true;
   }
 
-  INV_InsertBack(this, code, name, quantity);
+  if (INV_Len(this) == 0)
+  {
+	  INV_InsertBack(this, code, name, quantity);
+  }
+  else
+  {
+  	ord_insercion(this, code, name, quantity);
+    //algoritmo de ordenamiento
+  }
+  
   return true;
 }
 
@@ -124,11 +133,11 @@ void Stock_Menu(INV* this){
         
         if(!Stock_Out(this, code, cantidad)){
           
-          printf("No se pudo sacar el artículo porque no existe o sus existencias son cero.\n");
+          printf("No se pudo sacar el articulo porque no existe o sus existencias son cero.\n");
           break;
         }
 
-        printf("Se logró retirar con éxito.\n");
+        printf("Se logro retirar con exito.\n");
         break;
       case 3:
         
