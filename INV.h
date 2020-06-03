@@ -45,5 +45,6 @@ void INV_CursorFirst(   INV* this                       );
 void INV_CursorLast(    INV* this                       );
 void INV_CursorNext(    INV* this                       );
 void INV_CursorPrev(    INV* this                       );
+bool ord_insercion( INV* this, char* code, char* name, int quantity );
 
 #endif   /* ----- #ifndef INV_INC  ----- */
