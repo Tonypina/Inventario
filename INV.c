@@ -134,7 +134,9 @@ bool INV_Peek(INV* this, char* code, char* name, int* quantity){
   assert(this);
   bool done = false;
   if (this){
-    strcpy(data_back, this->cursor->data.name);
+    strcpy(name, this->cursor->data.name);
+    strcpy(code, this->cursor->data.code);
+    *quantity = this->cursor->data.quantity;
     done = true;
   }
   return done;
