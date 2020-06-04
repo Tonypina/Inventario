@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <string.h>
+#include <ctype.h>
 
 #define TAM_CODE 7
 #define TAM_NAME 31

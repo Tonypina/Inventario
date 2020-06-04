@@ -3,6 +3,7 @@
 
 #include "INV.h"
 
+void Stock_Toupper( char* array );
 void Stock_clear_screen(                                              );
 void Stock_PrintNode( INV* this, char* code, char* name, int* quantity);
 bool Stock_Out(       INV* this, char* code, int quantity             );
