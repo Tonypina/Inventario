@@ -163,7 +163,7 @@ void Stock_Menu(INV* this){
           break;
         }
 
-        printf("\t\t\t\tInserte el codigo del producto:");
+        printf("\n\t\t\t\tInserte el codigo del producto:");
         setbuf(stdin, NULL);
         gets(code);
                 
@@ -173,7 +173,7 @@ void Stock_Menu(INV* this){
           printf("----------------------------------------------------------------------------------------\n");
           Stock_PrintNode(this, code, nombre, &cantidad);
 
-          printf("\nInserte la cantidad a retirar.\n");
+          printf("\nInserte la cantidad a retirar: ");
           scanf("%d", &cantidad);
 
           if(!Stock_Out(this, code, cantidad)){
