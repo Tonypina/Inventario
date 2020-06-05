@@ -1,21 +1,42 @@
 #include "Stock.h"
 
+/**
+ * @brief Convierte todas las letras de un arreglo a mayusculas
+ * @param array El arreglo a modificar
+ */
 void Stock_Toupper(char* array){
   for(size_t i = 0; array[i] != '\0'; ++i){
     array[i] = toupper(array[i]);
   }
 }
 
+/**
+ * @brief Pausa y limpia la pantalla
+ */
 void Stock_clear_screen(){
   system("PAUSE");
   system("cls");
 }
 
+/**
+ * @brief Imprime en pantalla los datos dentro de un nodo
+ * @param this La lista
+ * @param code El codigo del producto
+ * @param name El nombre del producto
+ * @param quantity La cantidad de producto
+ */
 void Stock_PrintNode(INV* this, char* code, char* name, int* quantity){
   INV_Peek(this, code, name, quantity);
   printf("\t%s\t\t\t\t%s\t\t\t\t%d\n", code, name, *quantity);
 }
 
+/**
+ * @brief Reduce el elemento cantidad de un producto
+ * @param this La lista
+ * @param code El codigo del producto a reducir su cantidad
+ * @param quantity La cantidad a reducir del producto
+ * @return Un valor booleano
+ */
 bool Stock_Out(INV* this, char* code, int quantity ){
 
   if(INV_Search(this, code)){
@@ -31,6 +52,14 @@ bool Stock_Out(INV* this, char* code, int quantity ){
   return false;
 }
 
+/**
+ * @brief Agrega un producto al inventario
+ * @param this La lista
+ * @param code El codigo del producto
+ * @param name El nombre del producto
+ * @param quantity La cantidad de producto
+ * @return Un valor booleano
+ */
 bool Stock_Add(INV* this, char* code, char* name, int quantity ){
 
   if(INV_Search(this, code))
@@ -52,6 +81,10 @@ bool Stock_Add(INV* this, char* code, char* name, int quantity ){
   return true;
 }
 
+/**
+ * @brief Guarda en un archivo los datos del inventario
+ * @this La lista
+ */
 void Stock_Archive(INV* this){
 
   FILE* file;
@@ -64,6 +97,10 @@ void Stock_Archive(INV* this){
   fclose(file);
 }
 
+/**
+ * @brief Lee los datos del archivo al reabrir el programa
+ * @param this La lista
+ */
 void Stock_ReadArchive(INV* this){
 
   FILE* file = fopen("inventario.dat", "a+b");
@@ -84,6 +121,10 @@ void Stock_ReadArchive(INV* this){
   remove("inventario.dat");
 }
 
+/**
+ * @brief El menu del programa
+ * @param this La lista
+ */
 void Stock_Menu(INV* this){
   
   int answer = 0;
