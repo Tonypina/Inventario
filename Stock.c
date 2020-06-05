@@ -138,6 +138,7 @@ void Stock_Menu(INV* this){
             break;
           }
           printf("No se agrego el producto\n");
+          Stock_clear_screen();
           break;
         }
         printf("\n\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n");
@@ -165,19 +166,29 @@ void Stock_Menu(INV* this){
         printf("\t\t\t\tInserte el codigo del producto:");
         setbuf(stdin, NULL);
         gets(code);
-        
-        printf("\n\t\t\t\tInserte la cantidad que sale:");
-        scanf("%d", &cantidad);
-        
-        if(!Stock_Out(this, code, cantidad)){
+                
+        if(INV_Search(this, code)){
+
+          printf("\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n");
+          printf("----------------------------------------------------------------------------------------\n");
+          Stock_PrintNode(this, code, nombre, &cantidad);
+
+          printf("\nInserte la cantidad a retirar.\n");
+          scanf("%d", &cantidad);
+
+          if(!Stock_Out(this, code, cantidad)){
+
+            printf("No se pudo retirar porque no hay suficiente producto.\n");
+            Stock_clear_screen();
+            break;
+          }
           
-          printf("No se pudo sacar el artículo porque no existe o sus existencias son cero.\n");
+          printf("Se retiró exitosamente.\n");
+          cantidad = cantidad*(-1);
           Stock_clear_screen();
           break;
         }
-
-        printf("Se logró retirar con éxito.\n");
-        cantidad = cantidad*(-1);
+        printf("No se pudo retirar porque no existe el producto\n");
         Stock_clear_screen();
         break;
       case 3:
@@ -221,7 +232,7 @@ void Stock_Menu(INV* this){
       case 5:
         Stock_Archive(this);
 
-        printf("---SALISTE---\n\n");
+        printf("-----------------------------------------SALISTE-------------------------------------\n\n");
 
         Stock_clear_screen();
         break;
