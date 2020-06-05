@@ -1,5 +1,12 @@
 #include "INV.h"
 
+/**
+ * @brief Crea un nuevo nodo
+ * @param code Codigo del producto
+ * @param name Nombre del producto
+ * @param quantity Cantidad de producto
+ * @return Un nodo
+ */
 static Node* newNode( char* code, char* name, int quantity )
 {
   Node* n = (Node*) malloc( sizeof( Node ) );
@@ -13,12 +20,20 @@ static Node* newNode( char* code, char* name, int quantity )
   return n;
 }
 
+/**
+ * @brief Resetea la lista
+ * @param La lista a resetear
+ */
 static void reset( INV* this )
 {
     this->first = this->last = this->cursor = NULL;
     this->len = 0;
 }
 
+/**
+ * @brief Crea una lista (Inventario)
+ * @return Una lista
+ */
 INV* INV_New(){
   INV* list = (INV*) malloc( sizeof( INV ) );
     if( list ){
@@ -27,6 +42,10 @@ INV* INV_New(){
     return list;
 }
 
+/**
+ * @brief Borra la lista
+ * @param La lista a borrar
+ */
 void INV_Delete( INV** this ){
   assert(this);
   INV* l = *this;
@@ -49,6 +68,14 @@ void INV_Delete( INV** this ){
   *this = NULL;
 }
 
+/**
+ * @brief Inserta un nodo al final de la lista
+ * @param this La lista
+ * @param code El codigo del producto
+ * @param name El nombre del producto
+ * @param quantity La cantidad de producto
+ * @return Un valor booleano
+ */
 bool INV_InsertBack( INV* this, char* code, char* name, int quantity ){
     assert( this );
     bool done = false;
@@ -69,6 +96,14 @@ bool INV_InsertBack( INV* this, char* code, char* name, int quantity ){
     }
 }
 
+/**
+ * @brief Inserta un nodo al principio de la lista
+ * @param this La lista
+ * @param code El codigo del producto
+ * @param name El nombre del producto
+ * @param quantity La cantidad de producto
+ * @return Un valor booleano
+ */
 bool INV_InsertFront( INV* this, char* code, char* name, int quantity ){
   assert( this );
     bool done = false;
@@ -87,14 +122,28 @@ bool INV_InsertFront( INV* this, char* code, char* name, int quantity ){
     return done;
 }
 
+/**
+ * @brief Recupera el numero de elementos en la lista
+ * @param this La lista
+ * @return Numero de elementos en la lista
+ */
 size_t INV_Len( INV* this ){
   return this->len;
 }
 
+/**
+ * @brief Indica si la lista esta vacia
+ * @param this La lista
+ * @return Un valor booleano
+ */
 bool INV_IsEmpty( INV* this ){
   return (!this->len);
 }
 
+/**
+ * @brief Vacia la lista
+ * @param this La lista
+ */
 void INV_MakeEmpty( INV* this )
 {
     assert( this );
@@ -106,16 +155,28 @@ void INV_MakeEmpty( INV* this )
     reset( this );
 }
 
+/**
+ * @brief Mueve el cursor al primer nodo
+ * @param this La lista
+ */
 void INV_CursorFirst( INV* this ){
     assert( this );
     this->cursor = this->first;
 }
 
+/**
+ * @brief Mueve el cursor al ultimo nodo
+ * @param this La lista
+ */
 void INV_CursorLast( INV* this ){
   assert(this);
   this->cursor = this->last;
 }
 
+/**
+ * @brief Mueve el cursor al nodo siguiente del que apunta
+ * @param this La lista
+ */
 void INV_CursorNext( INV* this ){
     assert( this );
     if( this->cursor ){
@@ -123,6 +184,10 @@ void INV_CursorNext( INV* this ){
     }
 }
 
+/**
+ * @brief Mueve el cursor al nodo anterior del que apunta
+ * @param this La lista
+ */
 void INV_CursorPrev( INV* this ){
   assert( this );
   if (this->cursor){
@@ -130,6 +195,14 @@ void INV_CursorPrev( INV* this ){
   }
 }
 
+/**
+ * @brief Recupera los datos de un nodo
+ * @param this La lista
+ * @param code Arreglo para guardar el codigo del producto
+ * @param name Arreglo para guardar nombre del producto
+ * @param quantity Variable para guardar el valor de la cantidad
+ * @return Un valor booleano
+ */
 bool INV_Peek(INV* this, char* code, char* name, int* quantity){
   assert(this);
   bool done = false;
@@ -142,6 +215,13 @@ bool INV_Peek(INV* this, char* code, char* name, int* quantity){
   return done;
 }
 
+/**
+ * @brief Busca un producto en la lista
+ * @param this La lista
+ * @param code El codigo del producto a buscar
+ * @return Un valor booleano
+ * @post El cursor apunta al nodo buscado
+ */
 bool INV_Search( INV* this, char* code ){
   assert( this );
     bool found = false;
@@ -154,6 +234,14 @@ bool INV_Search( INV* this, char* code ){
     return found;
 }
 
+/**
+ * @brief Algoritmo que ordena alfabeticamente los nodos al insertarlos
+ * @param this La lista
+ * @param code El codigo del producto
+ * @param name El nombre del producto
+ * @param quantity La cantidad de producto
+ * @return Un valor booleano
+ */
 bool ord_insercion(INV* this, char* code, char* name, int quantity)
 {
   Node* right = this->last;
