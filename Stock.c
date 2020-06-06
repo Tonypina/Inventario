@@ -128,9 +128,16 @@ void Stock_ReadArchive(INV* this){
 void Stock_Menu(INV* this){
   
   int answer = 0;
+
+  FILE* file;
+  Product entrada;
+
+  /*
   char code[TAM_CODE];
   char nombre[TAM_NAME];
   int cantidad = 0;
+  */
+
   do {
     
     printf("\n\n\t\t\t\t*\t*\t*\t*\t*\t*\t*\n\n");
@@ -151,10 +158,10 @@ void Stock_Menu(INV* this){
         printf("------------------------------------Inventario------------------------------------------\n\n");
         printf("\t\t\t\t*\tInserte el codigo del producto: ");
         setbuf(stdin, NULL); //limpia el buffer
-        gets(code);
-        Stock_Toupper(code);
+        gets(entrada.code);
+        Stock_Toupper(entrada.code);
       
-        if(!INV_Search(this, code)){
+        if(!INV_Search(this, entrada.code)){
           
           printf("Codigo inexistente.\n");
           printf("\t\t\t*\tDesea agregarlo? (1/0)\n");
@@ -165,14 +172,20 @@ void Stock_Menu(INV* this){
               
             printf("\nInserte el nombre del producto: ");
             setbuf(stdin, NULL);
-            gets(nombre);
-            Stock_Toupper(nombre);
+            gets(entrada.name);
+            Stock_Toupper(entrada.name);
         
             printf("\nInserte la cantidad de producto: ");
-            scanf("%d", &cantidad);
+            scanf("%d", &entrada.quantity);
         
-            Stock_Add(this, code, nombre, cantidad);
+            Stock_Add(this, entrada.code, entrada.name, entrada.quantity);
             printf("Agregado con exito.\n");
+
+            file = fopen("reportes.dat", "ab");
+
+            fwrite(&entrada, sizeof(entrada), 1, file);
+
+            fclose(file);
 
             system("PAUSE");
             system("cls");
@@ -184,14 +197,20 @@ void Stock_Menu(INV* this){
         }
         printf("\n\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n");
         printf("----------------------------------------------------------------------------------------\n");
-        Stock_PrintNode(this, code, nombre, &cantidad);
+        Stock_PrintNode(this, entrada.code, entrada.name, &entrada.quantity);
 
         printf("\nInserte la cantidad de producto: ");
-        scanf("%d", &cantidad);
+        scanf("%d", &entrada.quantity);
       
-        Stock_Add(this, code, nombre, cantidad);
+        Stock_Add(this, entrada.code, entrada.name, entrada.quantity);
         printf("Se agregó correctamente.\n");
         Stock_clear_screen();
+
+        file = fopen("reportes.dat", "ab");
+
+        fwrite(&entrada, sizeof(entrada), 1, file);
+
+        fclose(file);
         break;
       case 2:
         
@@ -206,18 +225,18 @@ void Stock_Menu(INV* this){
 
         printf("\n\t\t\t\tInserte el codigo del producto:");
         setbuf(stdin, NULL);
-        gets(code);
+        gets(entrada.code);
                 
-        if(INV_Search(this, code)){
+        if(INV_Search(this, entrada.code)){
 
           printf("\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n");
           printf("----------------------------------------------------------------------------------------\n");
-          Stock_PrintNode(this, code, nombre, &cantidad);
+          Stock_PrintNode(this, entrada.code, entrada.name, &entrada.quantity);
 
           printf("\nInserte la cantidad a retirar: ");
-          scanf("%d", &cantidad);
+          scanf("%d", &entrada.quantity);
 
-          if(!Stock_Out(this, code, cantidad)){
+          if(!Stock_Out(this, entrada.code, entrada.quantity)){
 
             printf("No se pudo retirar porque no hay suficiente producto.\n");
             Stock_clear_screen();
@@ -225,7 +244,14 @@ void Stock_Menu(INV* this){
           }
           
           printf("Se retiró exitosamente.\n");
-          cantidad = cantidad*(-1);
+          entrada.quantity = entrada.quantity*(-1);
+
+          file = fopen("reportes.dat", "a+b");
+
+          fwrite(&entrada, sizeof(entrada), 1, file);
+
+          fclose(file);
+
           Stock_clear_screen();
           break;
         }
@@ -235,11 +261,24 @@ void Stock_Menu(INV* this){
       case 3:
         system("cls");
 
-        printf("Ultimo movimiento realizado.\n\n");
+        printf("Reporte de movimientos.\n\n");
 
-        printf("\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n");
+        printf("\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n\n");
         printf("----------------------------------------------------------------------------------------\n");
-        printf("\n\t%s\t\t\t\t%s\t\t\t\t%d\n", code, nombre, cantidad);
+        //printf("\n\t%s\t\t\t\t%s\t\t\t\t%d\n", code, nombre, cantidad);
+        
+        file = fopen("reportes.dat", "a+b");
+        Product test;
+
+        fread(&test,sizeof(test),1,file);
+        while (!feof(file)){
+          
+          printf("\t%s\t\t\t\t%s\t\t\t\t%d\n", test.code, test.name, test.quantity);  
+
+          fread(&test, sizeof(test), 1, file);
+        }
+        fclose(file);
+
         Stock_clear_screen();
         break;
       case 4:
@@ -258,12 +297,11 @@ void Stock_Menu(INV* this){
           Stock_clear_screen();
           break;
         }
-        
         INV_CursorFirst(this);
 
         for(size_t i = 0; i < INV_Len(this); ++i){
 
-          Stock_PrintNode(this, code, nombre, &cantidad);
+          Stock_PrintNode(this, entrada.code, entrada.name, &entrada.quantity);
           INV_CursorNext(this);
         }
         
