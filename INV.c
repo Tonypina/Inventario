@@ -123,6 +123,42 @@ bool INV_InsertFront( INV* this, char* code, char* name, int quantity ){
 }
 
 /**
+ * @brief Inserta un nodo a la derecha del nodo al que apunta el cursor
+ * @param this La lista
+ * @param code El codigo del producto
+ * @param name El nombre del producto
+ * @param quantity La cantidad de producto
+ * @return Un valor booleano
+ */
+bool INV_InsertAfter( INV* this, char* code, char* name,int quantity )
+{
+	assert( this );
+	bool done = false;
+
+	if(this->len < 2 || this->cursor == this->last)
+	{
+		done = true;
+		INV_InsertBack(this, code, name, quantity);
+	}
+	else
+	{
+		Node* n = newNode( code, name, quantity );
+		if( n )
+		{
+			done = true;
+
+			Node* tmp = this->cursor->next;
+			n->prev = this->cursor;
+			n->next = tmp;
+			this->cursor->next = n;
+			tmp->prev = n;
+		}
+		++this->len;
+	}
+	return done;
+}
+
+/**
  * @brief Recupera el numero de elementos en la lista
  * @param this La lista
  * @return Numero de elementos en la lista
@@ -260,16 +296,9 @@ bool ord_insercion(INV* this, char* code, char* name, int quantity)
 
   if( strcmp(name, right->data.name) < 0 && strcmp(name, left->data.name) > 0 && INV_Len(this) == 2)
   {
-    Node* n = newNode( code, name, quantity );
-    if(n)
-    {
-      right->prev = n;
-      left->next = n;
-      n->next = right;
-      n->prev = left;
-      ++this->len;
-      return true;
-    }
+	  INV_CursorFirst( this );
+	  INV_InsertAfter( this, code, name, quantity );
+	  return true;
   }
 
   if(INV_Len(this) > 2)
@@ -279,20 +308,13 @@ bool ord_insercion(INV* this, char* code, char* name, int quantity)
     {
       if( strcmp(name, right->data.name) < 0 && strcmp(name, left->data.name) > 0 )
       {
-         Node* n = newNode( code, name, quantity );
-         if( n )
-         {
-          left->next = n;
-          right->prev = n;
-          n->prev = left;
-          n->next = right;
-          ++this->len;
-         }
-        break;
+	      INV_Search( this, left->data.code );
+	      INV_InsertAfter( this, code, name, quantity );
+      	      return true;
+	      break;
       }
       left = left->prev;
       right = right->prev;
     }
-    return true;
   }
 }
