@@ -69,6 +69,42 @@ void INV_Delete( INV** this ){
 }
 
 /**
+ * @brief Inserta un nodo a la derecha del nodo al que apunta el cursor
+ * @param this La lista
+ * @param code El codigo del producto
+ * @param name El nombre del producto
+ * @param quantity La cantidad de producto
+ * @return Un valor booleano
+ */
+bool INV_InsertAfter( INV* this, char* code, char* name,int quantity )
+{
+	assert( this );
+	bool done = false;
+
+	if(this->len < 2 || this->cursor == this->last)
+	{
+		done = true;
+		INV_InsertBack(this, code, name, quantity);
+	}
+	else
+	{
+		Node* n = newNode( code, name, quantity );
+		if( n )
+		{
+			done = true;
+
+			Node* tmp = this->cursor->next;
+			n->prev = this->cursor;
+			n->next = tmp;
+			this->cursor->next = n;
+			tmp->prev = n;
+		}
+		++this->len;
+	}
+	return done;
+}
+
+/**
  * @brief Inserta un nodo al final de la lista
  * @param this La lista
  * @param code El codigo del producto
