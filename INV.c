@@ -296,16 +296,10 @@ bool ord_insercion(INV* this, char* code, char* name, int quantity)
 
   if( strcmp(name, right->data.name) < 0 && strcmp(name, left->data.name) > 0 && INV_Len(this) == 2)
   {
-    Node* n = newNode( code, name, quantity );
-    if(n)
-    {
-      right->prev = n;
-      left->next = n;
-      n->next = right;
-      n->prev = left;
-      ++this->len;
-      return true;
-    }
+	INV_CursorFirst( this );
+	INV_InsertAfter( this, code, name, quantity );
+	return true;
+	break;
   }
 
   if(INV_Len(this) > 2)
