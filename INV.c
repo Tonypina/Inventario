@@ -299,7 +299,6 @@ bool ord_insercion(INV* this, char* code, char* name, int quantity)
 	INV_CursorFirst( this );
 	INV_InsertAfter( this, code, name, quantity );
 	return true;
-	break;
   }
 
   if(INV_Len(this) > 2)
@@ -309,20 +308,13 @@ bool ord_insercion(INV* this, char* code, char* name, int quantity)
     {
       if( strcmp(name, right->data.name) < 0 && strcmp(name, left->data.name) > 0 )
       {
-         Node* n = newNode( code, name, quantity );
-         if( n )
-         {
-          left->next = n;
-          right->prev = n;
-          n->prev = left;
-          n->next = right;
-          ++this->len;
-         }
-        break;
+           INV_Search( this, left->data.code );
+	   INV_InsertAfter( this, code, name, quantity );
+      	   return true;
+	   break;
       }
       left = left->prev;
       right = right->prev;
     }
-    return true;
   }
 }
