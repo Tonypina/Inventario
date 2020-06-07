@@ -157,7 +157,7 @@ void Stock_Menu(INV* this){
         system("cls");
         printf("------------------------------------Inventario------------------------------------------\n\n");
 	printf("Para agregar un producto nuevo escriba un codigo nuevo.\n");
-	printf("Para aumentar la cantidad de un producto escriba un codigo existente.\n\n");
+	printf("Para aumentar la cantidad de un producto escriba un codigo existente.\n\n\n");
         printf("\t\t\t\t*\tInserte el codigo del producto: ");
         setbuf(stdin, NULL); //limpia el buffer
         gets(entrada.code);
