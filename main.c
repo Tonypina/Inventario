@@ -1,5 +1,5 @@
 //Comando de compilación
-// gcc -Wall -std=c99 -o main.out main.c INV.c Stock.c
+// gcc -Wall -std=c99 -o main main.c INV.c Stock.c
 
 #include "Stock.h"
 

@@ -150,36 +150,37 @@ void Stock_Menu(INV* this){
     printf("\t\t\t\t*\t5. Mostrar todos los productos.\t\t*\n\n");
     printf("\t\t\t\t*\t6. Salir.\t\t\t\t*\n\n");
     printf("\t\t\t\t*\t*\t*\t*\t*\t*\t*\n");
-    
-    printf("Ingrese el numero de la opcion:");
+
     scanf("%d", &answer);
     switch(answer){
       case 1:
 
         system("cls");
         printf("\n-------------------------------AGREGAR AL INVENTARIO------------------------------------\n\n");
+
         printf("\t\t\t*  Inserte el codigo del producto: ");
         setbuf(stdin, NULL); //limpia el buffer
         gets(entrada.code);
         Stock_Toupper(entrada.code);
-      
+        
         if(!INV_Search(this, entrada.code)){
-          
+            
           printf("\t\t\t Codigo inexistente.\n");
-          printf("\t\t\t*  Desea agregarlo? (1/0)\n");
-          int resp;
-          scanf("%d", &resp);
-          
-          if (resp == 1){
-              
+          printf("\t\t\t*  Desea agregarlo? (S/N)\n");
+          char resp;
+          scanf("%c", &resp);
+          resp = toupper(resp);
+            
+          if (resp == 'S'){
+                
             printf("\nInserte el nombre del producto: ");
             setbuf(stdin, NULL);
             gets(entrada.name);
             Stock_Toupper(entrada.name);
-        
+          
             printf("\nInserte la cantidad de producto: ");
             scanf("%d", &entrada.quantity);
-        
+          
             Stock_Add(this, entrada.code, entrada.name, entrada.quantity);
             printf("Agregado con exito.\n");
 
@@ -188,7 +189,7 @@ void Stock_Menu(INV* this){
             fwrite(&entrada, sizeof(entrada), 1, file);
 
             fclose(file);
-
+ 
             system("PAUSE");
             system("cls");
             break;
@@ -203,7 +204,7 @@ void Stock_Menu(INV* this){
 
         printf("\nInserte la cantidad de producto: ");
         scanf("%d", &entrada.quantity);
-      
+        
         Stock_Add(this, entrada.code, entrada.name, entrada.quantity);
         printf("Se agregó correctamente.\n");
         Stock_clear_screen();
@@ -243,7 +244,7 @@ void Stock_Menu(INV* this){
 
           if(!Stock_Out(this, entrada.code, entrada.quantity)){
 
-            printf("\nNo se pudo retirar porque no hay suficiente producto.\n");
+            printf("\nNo hay suficiente producto.\n");
             Stock_clear_screen();
             break;
           }
@@ -260,7 +261,7 @@ void Stock_Menu(INV* this){
           Stock_clear_screen();
           break;
         }
-        printf("\nNo se pudo retirar porque no existe el producto\n");
+        printf("\nNo existe el producto\n");
         Stock_clear_screen();
         break;
       
