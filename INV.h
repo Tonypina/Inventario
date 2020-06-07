@@ -37,6 +37,7 @@ INV* INV_New();
 void INV_Delete( 		INV** this 						);
 bool INV_InsertBack( 	INV* this, char* code, char* name, int quantity );
 bool INV_InsertFront( 	INV* this, char* code, char* name, int quantity );
+bool INV_InsertAfter( 	INV* this, char* code, char* name, int quantity );
 size_t INV_Len( 		INV* this 						);
 bool INV_IsEmpty( 		INV* this 						);
 void INV_MakeEmpty( 	INV* this 						);
