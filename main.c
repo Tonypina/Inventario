@@ -6,6 +6,7 @@
 int main()
 {	
 
+
 	INV* inv = INV_New();
 	
 	Stock_ReadArchive(inv);
