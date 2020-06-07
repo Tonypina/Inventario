@@ -140,15 +140,15 @@ void Stock_Menu(INV* this){
 
   do {
     
-    printf("\n\n\t\t\t\t*\t*\t*\t*\t*\t*\t*\n\n");
-    printf("\t\t\t\t*\t\tSistema de Inventario.\t\t*\n\n");
-    printf("\t\t\t\t*\t\tOpciones:\t\t\t*\n\n");
-    printf("\t\t\t\t*\t1. Agregar al inventario.\t\t*\n\n");
-    printf("\t\t\t\t*\t2. Eliminar del inventario.\t\t*\n\n");
-    printf("\t\t\t\t*\t3. Reportes.\t\t\t\t*\n\n");
-    printf("\t\t\t\t*\t4. Mostrar todos los productos.\t\t*\n\n");
-    printf("\t\t\t\t*\t5. Salir.\t\t\t\t*\n\n");
-    printf("\t\t\t\t*\t*\t*\t*\t*\t*\t*\n");
+    printf("\n\n\t\t\t\t*\t*\t*\t*\t*\t*\t*\t*\t*\n\n");
+    printf("\t\t\t\t*\t\tSistema de Inventario.\t\t\t\t*\n\n");
+    printf("\t\t\t\t*\t\tOpciones:\t\t\t\t\t*\n\n");
+    printf("\t\t\t\t*\t1. Agregar al inventario/Aumentar cantidad.\t\t*\n\n");
+    printf("\t\t\t\t*\t2. Eliminar del inventario.\t\t\t\t*\n\n");
+    printf("\t\t\t\t*\t3. Reportes.\t\t\t\t\t\t*\n\n");
+    printf("\t\t\t\t*\t4. Mostrar todos los productos.\t\t\t\t*\n\n");
+    printf("\t\t\t\t*\t5. Salir.\t\t\t\t\t\t*\n\n");
+    printf("\t\t\t\t*\t*\t*\t*\t*\t*\t*\t*\t*\n");
 
     scanf("%d", &answer);
     switch(answer){
@@ -156,6 +156,8 @@ void Stock_Menu(INV* this){
 
         system("cls");
         printf("------------------------------------Inventario------------------------------------------\n\n");
+	printf("Para agregar un producto nuevo escriba un codigo nuevo.\n");
+	printf("Para aumentar la cantidad de un producto escriba un codigo existente.\n\n");
         printf("\t\t\t\t*\tInserte el codigo del producto: ");
         setbuf(stdin, NULL); //limpia el buffer
         gets(entrada.code);
@@ -195,15 +197,15 @@ void Stock_Menu(INV* this){
           Stock_clear_screen();
           break;
         }
-        printf("\n\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n");
+        printf("\n\tCodigo\t\t\t\tNombre\t\t\t\tCantidad\n");
         printf("----------------------------------------------------------------------------------------\n");
         Stock_PrintNode(this, entrada.code, entrada.name, &entrada.quantity);
 
-        printf("\nInserte la cantidad de producto: ");
+        printf("\nInserte la cantidad a agregar del producto: ");
         scanf("%d", &entrada.quantity);
       
         Stock_Add(this, entrada.code, entrada.name, entrada.quantity);
-        printf("Se agregó correctamente.\n");
+        printf("Se agrego correctamente.\n");
         Stock_clear_screen();
 
         file = fopen("reportes.dat", "ab");
@@ -223,13 +225,13 @@ void Stock_Menu(INV* this){
           break;
         }
 
-        printf("\n\t\t\t\tInserte el codigo del producto:");
+        printf("\n\t\t\t*\tInserte el codigo del producto:");
         setbuf(stdin, NULL);
         gets(entrada.code);
                 
         if(INV_Search(this, entrada.code)){
 
-          printf("\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n");
+          printf("\tCodigo\t\t\t\tNombre\t\t\t\tCantidad\n");
           printf("----------------------------------------------------------------------------------------\n");
           Stock_PrintNode(this, entrada.code, entrada.name, &entrada.quantity);
 
@@ -243,7 +245,7 @@ void Stock_Menu(INV* this){
             break;
           }
           
-          printf("Se retiró exitosamente.\n");
+          printf("Se retiro exitosamente.\n");
           entrada.quantity = entrada.quantity*(-1);
 
           file = fopen("reportes.dat", "a+b");
@@ -263,7 +265,7 @@ void Stock_Menu(INV* this){
 
         printf("Reporte de movimientos.\n\n");
 
-        printf("\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n\n");
+        printf("\tCodigo\t\t\t\tNombre\t\t\t\tCantidad\n\n");
         printf("----------------------------------------------------------------------------------------\n");
         //printf("\n\t%s\t\t\t\t%s\t\t\t\t%d\n", code, nombre, cantidad);
         
@@ -288,7 +290,7 @@ void Stock_Menu(INV* this){
         
         printf("Productos existentes:\n\n");
 
-        printf("\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n");
+        printf("\tCodigo\t\t\t\tNombre\t\t\t\tCantidad\n");
         printf("----------------------------------------------------------------------------------------\n");
 
         if(INV_IsEmpty(this)){
