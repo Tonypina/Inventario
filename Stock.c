@@ -150,7 +150,8 @@ void Stock_Menu(INV* this){
     printf("\t\t\t\t*\t5. Mostrar todos los productos.\t\t*\n\n");
     printf("\t\t\t\t*\t6. Salir.\t\t\t\t*\n\n");
     printf("\t\t\t\t*\t*\t*\t*\t*\t*\t*\n");
-
+    
+    printf("Ingrese el numero de la opcion:");
     scanf("%d", &answer);
     switch(answer){
       case 1:
