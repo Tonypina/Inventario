@@ -9,7 +9,7 @@ int main(){
 
 	Stock_ReadArchive(inv);
 
-	system("cls");
+	system("clear");
 
 	Stock_Menu(inv);
 
