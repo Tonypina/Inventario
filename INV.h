@@ -7,7 +7,7 @@
 #include <assert.h>
 #include <string.h>
 #include <ctype.h>
-#include <stdio_ext.h>
+//#include <stdio_ext.h>
 
 #define TAM_CODE 7
 #define TAM_NAME 31
