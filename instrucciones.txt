@@ -1,1 +1,0 @@
-gcc -Wall -std=c99 -o inventario.out main.c INV.c Stock.c
