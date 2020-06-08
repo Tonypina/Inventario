@@ -15,7 +15,7 @@ void Stock_Toupper(char* array){
  */
 void Stock_clear_screen(){
   system("PAUSE");
-  system("cls");
+  system("clear");
 }
 
 /**
@@ -77,7 +77,6 @@ bool Stock_Add(INV* this, char* code, char* name, int quantity ){
     ord_insercion(this, code, name, quantity);
     //algoritmo de ordenamiento
   }
-  
   return true;
 }
 
@@ -91,7 +90,6 @@ void Stock_Archive(INV* this){
   file = fopen("inventario.dat", "ab");
 
   for (Node* it = this->first; it != NULL; it = it->next){
-    
     fwrite(&it->data, sizeof(it->data), 1, file);
   }
   fclose(file);
@@ -108,13 +106,13 @@ void Stock_ReadArchive(INV* this){
 
   fread(&test,sizeof(test),1,file);
   while (!feof(file)){
-    
+
     if(!INV_Len(this)){
       INV_InsertBack(this, test.code, test.name, test.quantity);
     } else {
       ord_insercion(this, test.code, test.name, test.quantity);
     }
-    
+
     fread(&test, sizeof(test), 1, file);
   }
   fclose(file);
@@ -126,7 +124,7 @@ void Stock_ReadArchive(INV* this){
  * @param this La lista
  */
 void Stock_Menu(INV* this){
-  
+
   int answer = 0;
 
   FILE* file;
@@ -139,7 +137,7 @@ void Stock_Menu(INV* this){
   */
 
   do {
-    
+
     printf("\n\n\t\t\t\t*\t*\t*\t*\t*\t*\t*\n\n");
     printf("\t\t\t\t*\t\tSistema de Inventario.\t\t*\n\n");
     printf("\t\t\t\t*\t\tOpciones:\t\t\t*\n\n");
@@ -155,32 +153,32 @@ void Stock_Menu(INV* this){
     switch(answer){
       case 1:
 
-        system("cls");
+        system("clear");
         printf("\n-------------------------------AGREGAR AL INVENTARIO------------------------------------\n\n");
 
         printf("\t\t\t*  Inserte el codigo del producto: ");
         setbuf(stdin, NULL); //limpia el buffer
-        gets(entrada.code);
+        scanf("%*c%[^\n]", entrada.name);
         Stock_Toupper(entrada.code);
-        
+
         if(!INV_Search(this, entrada.code)){
-            
+
           printf("\t\t\t Codigo inexistente.\n");
           printf("\t\t\t*  Desea agregarlo? (S/N)\n");
           char resp;
           scanf("%c", &resp);
           resp = toupper(resp);
-            
+
           if (resp == 'S'){
-                
+
             printf("\nInserte el nombre del producto: ");
             setbuf(stdin, NULL);
-            gets(entrada.name);
+            scanf("%*c%[^\n]", entrada.name);
             Stock_Toupper(entrada.name);
-          
+
             printf("\nInserte la cantidad de producto: ");
             scanf("%d", &entrada.quantity);
-          
+
             Stock_Add(this, entrada.code, entrada.name, entrada.quantity);
             printf("Agregado con exito.\n");
 
@@ -189,22 +187,23 @@ void Stock_Menu(INV* this){
             fwrite(&entrada, sizeof(entrada), 1, file);
 
             fclose(file);
- 
+
             system("PAUSE");
-            system("cls");
+            system("clear");
             break;
           }
           printf("No se agrego el producto\n");
           Stock_clear_screen();
           break;
         }
+
         printf("\n\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n");
         printf("----------------------------------------------------------------------------------------\n");
         Stock_PrintNode(this, entrada.code, entrada.name, &entrada.quantity);
 
         printf("\nInserte la cantidad de producto: ");
         scanf("%d", &entrada.quantity);
-        
+
         Stock_Add(this, entrada.code, entrada.name, entrada.quantity);
         printf("Se agregó correctamente.\n");
         Stock_clear_screen();
@@ -215,14 +214,12 @@ void Stock_Menu(INV* this){
 
         fclose(file);
         break;
+
       case 2:
-        
-        system("cls");
-      
+        system("clear");
         printf("\n------------------------------ELIMINAR DEL INVENTARIO-----------------------------------\n\n");
 
         if(INV_IsEmpty(this)){
-        
           printf("\nEl inventario esta vacio\n");
           Stock_clear_screen();
           break;
@@ -230,9 +227,9 @@ void Stock_Menu(INV* this){
 
         printf("\t\t\t*  Inserte el codigo del producto: ");
         setbuf(stdin, NULL);
-        gets(entrada.code);
+        scanf("%*c%[^\n]", entrada.name);
         Stock_Toupper(entrada.code);
-                
+
         if(INV_Search(this, entrada.code)){
 
           printf("\n\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n");
@@ -248,7 +245,7 @@ void Stock_Menu(INV* this){
             Stock_clear_screen();
             break;
           }
-          
+
           printf("\nSe retiró exitosamente.\n");
           entrada.quantity = entrada.quantity*(-1);
 
@@ -264,14 +261,13 @@ void Stock_Menu(INV* this){
         printf("\nNo existe el producto\n");
         Stock_clear_screen();
         break;
-      
       case 3:
-        system("cls");
+        system("clear");
 
         printf("\n------------------------------------MOSTRAR PRODUCTO------------------------------------\n\n");        
         printf("\t\t\t*  Inserte el codigo del producto: ");
         setbuf(stdin, NULL);
-        gets(entrada.code);
+        scanf("%*c%[^\n]", entrada.name);
         Stock_Toupper(entrada.code);
 
         if(INV_Search(this, entrada.code)){
@@ -286,21 +282,20 @@ void Stock_Menu(INV* this){
         printf("\nNo existe el producto.\n");
         Stock_clear_screen();
         break;
-
       case 4:
-        system("cls");
+        system("clear");
 
         printf("\n------------------------------REPORTE DE MOVIMIENTOS------------------------------------\n\n");
 
         printf("\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n\n");
         printf("----------------------------------------------------------------------------------------\n");
-        
+
         file = fopen("reportes.dat", "a+b");
         Product test;
 
         fread(&test,sizeof(test),1,file);
         while (!feof(file)){
-          
+
           printf("\t%s\t\t\t\t%s\t\t\t\t%d\n", test.code, test.name, test.quantity);  
 
           fread(&test, sizeof(test), 1, file);
@@ -310,10 +305,10 @@ void Stock_Menu(INV* this){
         Stock_clear_screen();
         break;
       case 5:
-        
-        system("cls");
+
+        system("clear");
         printf("------------------------------------INVENTARIO------------------------------------------\n\n");
-        
+
         printf("Productos existentes:\n\n");
 
         printf("\tCódigo\t\t\t\tNombre\t\t\t\tCantidad\n");
@@ -332,7 +327,7 @@ void Stock_Menu(INV* this){
           Stock_PrintNode(this, entrada.code, entrada.name, &entrada.quantity);
           INV_CursorNext(this);
         }
-        
+
         printf("\nActualmente hay %d productos en el inventario.\n\n", INV_Len(this));
         Stock_clear_screen();
         break;
@@ -344,9 +339,9 @@ void Stock_Menu(INV* this){
         Stock_clear_screen();
         break;
       default:
-        
+
         printf("\nIngresa una opcion valida.\n\n");
-        Stock_clear_screen();     
+        Stock_clear_screen();
     }
   } while (answer != 6);
 }

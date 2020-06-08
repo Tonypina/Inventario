@@ -3,17 +3,15 @@
 
 #include "Stock.h"
 
-int main()
-{	
-
+int main(){
 
 	INV* inv = INV_New();
-	
+
 	Stock_ReadArchive(inv);
 
-	system("cls");
-	
+	system("clear");
+
 	Stock_Menu(inv);
-	
+
 	INV_Delete(&inv);
 }
